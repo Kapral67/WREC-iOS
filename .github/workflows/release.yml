@@ -85,6 +85,18 @@ jobs:
                   'content-type': 'text/plain'
                 }
               });
+              const update = fs.readFileSync(path.basename('./update.sh'));
+              await github.rest.repos.uploadReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: release.data.id,
+                name: 'update.sh',
+                data: update,
+                headers: {
+                  'content-length': update.length,
+                  'content-type': 'text/plain'
+                }
+              });
               await github.rest.repos.updateRelease({
                 owner: context.repo.owner,
                 repo: context.repo.repo,

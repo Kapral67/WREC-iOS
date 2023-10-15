@@ -2,8 +2,12 @@
 
 # Copyright (c) 2023
 # author: MAXWELL KAPRAL
+# shellcheck disable=SC2181
+# shellcheck disable=SC2154
 
-source secrets
+exec 2>/dev/null
+
+. secrets
 
 mkdir -p "$HOME/tmp"
 start_endpoint="https://innosoftfusiongo.com/sso/login/login-start.php?id=21"
