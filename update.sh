@@ -7,10 +7,11 @@
 exec 2>/dev/null
 
 url="https://github.com/Kapral67/WREC-iOS/releases/download/latest/"
-vfile="$HOME"/Documents/ver
+vfile="$HOME/Documents/ver"
+mkdir -p "$HOME"/Documents/bin
 
 update() {
-  if curl -s -o "$HOME"/Documents/bin/"${1}".sh "${url}${1}.sh"; then
+  if curl -fsL -o "$HOME"/Documents/bin/"${1}".sh "${url}${1}.sh"; then
     mv "$HOME"/Documents/bin/"${1}".sh "$HOME"/Documents/bin/"${1}"
     chmod +x "$HOME"/Documents/bin/"${1}"
     if [ -n  "${2}" ]; then
@@ -23,7 +24,7 @@ update() {
 }
 
 ver="$(cat "$vfile")"
-lat="$(curl -Is "${url}index.sh" | awk '/last-modified:/ {sub(/last-modified:/, ""); print}' | date -f - +%s)"
+lat="$(curl -fIsL "${url}index.sh" | awk '/last-modified:/ {sub(/last-modified:/, ""); print}' | date -f - +%s)"
 
 if ! echo "$lat" | grep -qE '^[0-9]+$'; then
   exit 1
