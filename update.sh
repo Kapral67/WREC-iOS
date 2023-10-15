@@ -22,8 +22,9 @@ update() {
 }
 
 ver="$(cat "$vfile" 2>/dev/null)"
-dat="$(curl -fIsL "${url}index.sh" 2>/dev/null | awk '/Last-Modified:/ {sub(/Last-Modified:/, ""); print}' 2>/dev/null)"
-lat="$(date -j -f "%a, %d, %b %Y %H:%M:%S %Z" "$dat" +%s 2>/dev/null)"
+dat="$(curl -fIsL "${url}index.sh" 2>/dev/null |
+  awk '/Last-Modified: / {sub(/Last-Modified: /, ""); print}' 2>/dev/null)"
+lat="$(date -j -f "%a, %d %b %Y %T %Z" "$dat" +%s 2>/dev/null)"
 
 if ! echo "$lat" 2>/dev/null | grep -qE '^[0-9]+$' 2>/dev/null; then
   exit 1
