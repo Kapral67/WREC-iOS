@@ -14,7 +14,7 @@ update() {
   if curl -fsL -o "$HOME"/Documents/bin/"${1}".sh "${url}${1}.sh"; then
     mv "$HOME"/Documents/bin/"${1}".sh "$HOME"/Documents/bin/"${1}"
     chmod +x "$HOME"/Documents/bin/"${1}"
-    if [ -n  "${2}" ]; then
+    if [ -n "${2}" ]; then
       echo "${2}" > "$vfile"
     fi
   else
