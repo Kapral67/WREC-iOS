@@ -1,0 +1,95 @@
+name: Release Workflow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'index.sh'
+
+jobs:
+  publish:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Delete Previous Release
+        uses: actions/github-script@v6
+        continue-on-error: true
+        with:
+          script: |
+            try {
+              const { data } = await github.rest.repos.getReleaseByTag({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag: 'latest'
+              });
+              await github.rest.repos.deleteRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: data.id
+              });
+            } catch (e) {
+              console.log(e);
+            }
+            try {
+              await github.rest.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'tags/latest'
+              });
+            } catch (e) {
+              console.log(e);
+            }
+      - name: Create New Release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const tag = 'latest';
+            const commit = context.sha;
+            try {
+              await github.rest.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `refs/tags/${tag}`,
+                sha: commit
+              });
+            } catch (e) {
+              console.log(e);
+              throw e;
+            }
+            try {
+              const release = await github.rest.repos.createRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag_name: tag,
+                name: tag,
+                body: 'Latest Public Release',
+                draft: true,
+                prerelease: false
+              });
+              const fs = require('fs');
+              const path = require('path');
+              const index = fs.readFileSync(path.basename('./index.sh'));
+              await github.rest.repos.uploadReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: release.data.id,
+                name: 'index.sh',
+                data: index,
+                headers: {
+                  'content-length': index.length,
+                  'content-type': 'text/plain'
+                }
+              });
+              await github.rest.repos.updateRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: release.data.id,
+                draft: false
+              });
+            } catch (e) {
+              console.log(e);
+              throw e;
+            }
