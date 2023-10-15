@@ -8,6 +8,7 @@ on:
       - 'index.sh'
       - 'update.sh'
       - 'WREC.shortcut'
+      - '.github/workflows/release.yml'
 
 jobs:
   publish:
