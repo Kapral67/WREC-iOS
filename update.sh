@@ -9,7 +9,7 @@ vfile="$HOME/Documents/ver"
 mkdir -p "$HOME"/Documents/bin 2>/dev/null
 
 update() {
-  if curl -fsL -o "$HOME"/Documents/bin/"${1}".sh "${url}${1}.sh" 2>/dev/null; then
+  if curl -fsL -o "$HOME"/Documents/bin/"${1}".sh "${url}${1}.sh"; then
     mv "$HOME"/Documents/bin/"${1}".sh "$HOME"/Documents/bin/"${1}" 2>/dev/null
     chmod +x "$HOME"/Documents/bin/"${1}" 2>/dev/null
     if [ -n "${2}" ]; then
@@ -22,8 +22,7 @@ update() {
 }
 
 ver="$(cat "$vfile" 2>/dev/null)"
-dat="$(curl -fIsL "${url}index.sh" 2>/dev/null |
-  awk '/Last-Modified: / {sub(/Last-Modified: /, ""); print}' 2>/dev/null)"
+dat="$(curl -fIsL "${url}index.sh" | awk '/Last-Modified: / {sub(/Last-Modified: /, ""); print}' 2>/dev/null)"
 lat="$(date -j -f "%a, %d %b %Y %T %Z" "$dat" +%s 2>/dev/null)"
 
 if ! echo "$lat" 2>/dev/null | grep -qE '^[0-9]+$' 2>/dev/null; then
