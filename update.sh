@@ -24,7 +24,7 @@ update() {
 }
 
 ver="$(cat "$vfile")"
-dat="$(curl -fIsL "${url}index.sh" | awk '/last-modified:/ {sub(/last-modified:/, ""); print}')"
+dat="$(curl -fIsL "${url}index.sh" | awk '/Last-Modified:/ {sub(/Last-Modified:/, ""); print}')"
 lat="$(date -j -f "%a, %d, %b %Y %H:%M:%S %Z" "$dat" +%s)"
 
 if ! echo "$lat" | grep -qE '^[0-9]+$'; then
