@@ -99,7 +99,7 @@ jobs:
                   'content-type': 'text/plain'
                 }
               });
-              const wrec = fs.readFileSync(path.basename('./wrec.sh'));
+              const wrec = fs.readFileSync(path.basename('./WREC.shortcut'));
               await github.rest.repos.uploadReleaseAsset({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
