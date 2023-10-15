@@ -5,7 +5,7 @@
 # shellcheck disable=SC2181
 # shellcheck disable=SC2154
 
-. "$HOME"/Documents/secrets
+. "$HOME"/Documents/secret
 
 mkdir -p "$HOME/tmp" 2>/dev/null
 cookiejar="$HOME/tmp/cookiejar"
