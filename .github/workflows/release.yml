@@ -4,13 +4,15 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'index.sh'
+    # paths:
+    #   - 'index.sh'
 
 jobs:
   publish:
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
