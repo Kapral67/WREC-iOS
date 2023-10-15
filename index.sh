@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# Copyright (c) 2023
+# author: MAXWELL KAPRAL
+
 source secrets
 
 mkdir -p "$HOME/tmp"
