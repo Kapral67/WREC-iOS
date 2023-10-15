@@ -28,7 +28,7 @@ lat="$(curl -fIsL "${url}index.sh" | awk '/last-modified:/ {sub(/last-modified:/
 
 if ! echo "$lat" | grep -qE '^[0-9]+$'; then
   exit 1
-elif [ $? -gt 0 ] || ! echo "$ver" | grep -qE '^[0-9]+$' || [ "$ver" -lt "$lat" ]; then
+elif ! echo "$ver" | grep -qE '^[0-9]+$' || [ "$ver" -lt "$lat" ]; then
   update index.sh "$lat"
   update update.sh
 fi
