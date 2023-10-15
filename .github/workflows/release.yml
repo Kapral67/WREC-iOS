@@ -8,6 +8,7 @@ on:
       - 'index.sh'
       - 'update.sh'
       - 'WREC.shortcut'
+      - 'WREC-Installer.shortcut'
       - '.github/workflows/release.yml'
 
 jobs:
@@ -109,6 +110,18 @@ jobs:
                 data: wrec,
                 headers: {
                   'content-length': wrec.length,
+                  'content-type': 'application/octet-stream'
+                }
+              });
+              const installer = fs.readFileSync(path.basename('./WREC-Installer.shortcut'));
+              await github.rest.repos.uploadReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: release.data.id,
+                name: 'WREC-Installer.shortcut',
+                data: installer,
+                headers: {
+                  'content-length': installer.length,
                   'content-type': 'application/octet-stream'
                 }
               });
