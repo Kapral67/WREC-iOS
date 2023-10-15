@@ -4,8 +4,10 @@ on:
   push:
     branches:
       - main
-    # paths:
-    #   - 'index.sh'
+    paths:
+      - 'index.sh'
+      - 'update.sh'
+      - 'WREC.shortcut'
 
 jobs:
   publish:
@@ -95,6 +97,18 @@ jobs:
                 headers: {
                   'content-length': update.length,
                   'content-type': 'text/plain'
+                }
+              });
+              const wrec = fs.readFileSync(path.basename('./wrec.sh'));
+              await github.rest.repos.uploadReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: release.data.id,
+                name: 'WREC.shortcut',
+                data: wrec,
+                headers: {
+                  'content-length': wrec.length,
+                  'content-type': 'application/octet-stream'
                 }
               });
               await github.rest.repos.updateRelease({
