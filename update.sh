@@ -29,8 +29,8 @@ lat="$(date -j -f "%a, %d %b %Y %T %Z" "$dat" +%s 2>/dev/null)"
 if ! echo "$lat" 2>/dev/null | grep -qE '^[0-9]+$' 2>/dev/null; then
   exit 1
 elif ! echo "$ver" 2>/dev/null | grep -qE '^[0-9]+$' 2>/dev/null || [ "$ver" -lt "$lat" ]; then
-  update index.sh "$lat"
-  update update.sh
+  update index "$lat"
+  update update
 fi
 
 exit 0
