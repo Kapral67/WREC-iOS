@@ -5,31 +5,28 @@
 # shellcheck disable=SC2181
 # shellcheck disable=SC2154
 
-exec 2>/dev/null
-
 . "$HOME"/Documents/secrets
 
-mkdir -p "$HOME/tmp"
-start_endpoint="https://innosoftfusiongo.com/sso/login/login-start.php?id=21"
+mkdir -p "$HOME/tmp" 2>/dev/null
 cookiejar="$HOME/tmp/cookiejar"
-curl -fsIL -c "$cookiejar" "$start_endpoint" -o /dev/null
+curl -fsIL -c "$cookiejar" "https://innosoftfusiongo.com/sso/login/login-start.php?id=21" -o /dev/null 2>/dev/null
 process_endpoint="https://innosoftfusiongo.com/sso/login/login-process-fusion.php"
 curl -fsL -X POST -c "$cookiejar" -b "$cookiejar" -o /dev/null $process_endpoint -H 'Content-Type: application/x-www-form-urlencoded' \
     --data-urlencode "username=$username" \
     --data-urlencode "password=$password" \
-    --data-urlencode 'Submit=Login'
+    --data-urlencode 'Submit=Login' 2>/dev/null
 finish_endpoint="https://innosoftfusiongo.com/sso/login/login-finish.php"
-token="$(curl -fsiIL -c "$cookiejar" -b "$cookiejar" $finish_endpoint | awk '/Fusion-Token/ {print $2}')"
+token="$(curl -fsiIL -c "$cookiejar" -b "$cookiejar" $finish_endpoint 2>/dev/null | awk '/Fusion-Token/ {print $2}' 2>/dev/null)"
 barcode_endpoint="https://innosoftfusiongo.com/sso/api/barcode.php?id=21"
 if [ -n "$token" ]; then
-    barcode="$(curl -fsL -X GET -c "$cookiejar" -b "$cookiejar" -H "Authorization: Bearer $token" "$barcode_endpoint" |
-        jq -rc '.[].AppBarcodeIdNumber')"
-    rm -f "$cookiejar"
+    barcode="$(curl -fsL -X GET -c "$cookiejar" -b "$cookiejar" -H "Authorization: Bearer $token" "$barcode_endpoint" 2>/dev/null |
+        jq -rc '.[].AppBarcodeIdNumber' 2>/dev/null)"
+    rm -f "$cookiejar" 2>/dev/null
     if [ -n "$barcode" ]; then
-        echo "https://barcodeapi.org/api/128/$barcode"
+        echo "https://barcodeapi.org/api/128/$barcode" 2>/dev/null
         exit 0
     fi
     exit 1
 fi
-rm -f "$cookiejar"
+rm -f "$cookiejar" 2>/dev/null
 exit 1
