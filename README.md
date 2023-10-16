@@ -2,8 +2,4 @@
 
 For Seamlessly Generating Your Barcodes
 
-## Installation
-
-1. Download [a-Shell mini](https://apps.apple.com/us/app/a-shell-mini/id1543537943)
-
-2. Download and Run the [Installer](https://github.com/Kapral67/WREC-iOS/releases/download/latest/WREC-Installer.shortcut)
+[![Static Badge](https://img.shields.io/badge/Get%20this%20Shortcut-black?style=for-the-badge&logo=apple)](https://github.com/Kapral67/WREC-iOS/releases/download/latest/WREC-Installer.shortcut)
